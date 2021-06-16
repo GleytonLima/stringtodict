@@ -2,8 +2,10 @@ from typing import List
 
 
 class Definition(object):
-    def __init__(self, size: int):
+    def __init__(self, size: int, default_value, custom_formatter=lambda x: x):
         self.size = size
+        self.default_value = default_value
+        self.custom_formatter = custom_formatter
 
 
 class Attribute(object):
@@ -52,9 +54,8 @@ class StringToDict(object):
             if parent_path != "":
                 path = parent_path + "." + attribute.name
             if isinstance(attribute, Attribute):
-                value = find_attribute_value_by_path(path, dictionary)
-                if isinstance(value, str):
-                    string_final[0] += value
+                value = find_attribute_value_by_path(path, dictionary, attribute)
+                string_final[0] += str(value)
             if isinstance(attribute, Schema):
                 if attribute.occurrences == 1:
                     StringToDict(attribute).parse_dict(dictionary, string_final, path)
@@ -65,16 +66,16 @@ class StringToDict(object):
         return string_final[0]
 
 
-def find_attribute_value_by_path(path_attribute, json):
+def find_attribute_value_by_path(path_attribute, json, attribute: Attribute):
     keys = path_attribute.split('.')
     result_value = json
     for key in keys:
         try:
             string_int = int(key)
             result_value = result_value[string_int]
-        except ValueError:
+        except Exception:
             try:
                 result_value = result_value[key]
             except Exception:
-                result_value = None
-    return result_value
+                result_value = str(attribute.definition.default_value) * attribute.definition.size
+    return attribute.definition.custom_formatter(result_value)
