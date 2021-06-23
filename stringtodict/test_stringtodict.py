@@ -136,11 +136,12 @@ class TestStringToDict(TestCase):
         self.assertEqual(result_string, text, 'Não foi possível converter dicionário em texto')
 
     def test_parse_string_with_custom_formatter_2(self):
-        attribute_name = Attribute("name", Definition(2, "0", [lambda x: str(x).zfill(2)]))
+        attribute_name = Attribute("name",
+                                   Definition(4, "0", [lambda x: str(x).replace(".", ""), lambda x: str(x).zfill(4)]))
         schema = Schema("root", [attribute_name])
-        text = "05"
+        text = "0534"
         dictionary = {
-            'name': 5
+            'name': 5.34
         }
         result_string = StringToDict(schema).parse_dict(dictionary)
-        self.assertEqual(result_string, text, 'Não foi possível converter dicionário em texto')
+        self.assertEqual(text, result_string, 'Não foi possível converter dicionário em texto')
