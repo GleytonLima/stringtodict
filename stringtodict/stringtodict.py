@@ -2,10 +2,12 @@ from typing import List
 
 
 class Definition(object):
-    def __init__(self, size: int, default_value, custom_formatter=lambda x: x):
+    def __init__(self, size: int, default_value, custom_formatters=None):
+        if custom_formatters is None:
+            custom_formatters = [lambda x: x]
         self.size = size
         self.default_value = default_value
-        self.custom_formatter = custom_formatter
+        self.custom_formatters = custom_formatters
 
 
 class Attribute(object):
@@ -78,4 +80,6 @@ def find_attribute_value_by_path(path_attribute, json, attribute: Attribute):
                 result_value = result_value[key]
             except Exception:
                 result_value = str(attribute.definition.default_value) * attribute.definition.size
-    return attribute.definition.custom_formatter(result_value)
+    for custom_formatter in attribute.definition.custom_formatters:
+        result_value = custom_formatter(result_value)
+    return result_value
