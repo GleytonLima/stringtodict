@@ -34,7 +34,10 @@ class StringToDict(object):
             dict_result = {}
         for attribute in self.schema.attributes:
             if isinstance(attribute, Attribute):
-                dict_result[attribute.name] = string_to_parse[cursor[0]:(cursor[0] + attribute.definition.size)]
+                result_value = string_to_parse[cursor[0]:(cursor[0] + attribute.definition.size)]
+                for custom_formatter in attribute.definition.custom_formatters:
+                    result_value = custom_formatter(result_value)
+                dict_result[attribute.name] = result_value
                 cursor[0] += attribute.definition.size
             if isinstance(attribute, Schema):
                 if attribute.occurrences == 1:

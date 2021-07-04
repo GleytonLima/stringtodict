@@ -1,3 +1,4 @@
+from decimal import Decimal
 from unittest import TestCase
 
 from stringtodict import Attribute, Definition, Schema, StringToDict
@@ -35,6 +36,16 @@ class TestStringToDict(TestCase):
     def test_parse_string_complete_0(self):
         result = StringToDict(self.schema).parse_string(self.text)
         self.assertEqual(result, self.dictionary, 'Não foi possível converter texto em dicionário')
+
+    def test_parse_string_0(self):
+        attribute_name = Attribute("name", Definition(4, "0", [lambda x: x[:2] + '.' + x[2:], lambda x: float(x.strip(' "'))]))
+        schema = Schema("root", [attribute_name])
+        text = "0534"
+        dictionary = {
+            'name': 5.34
+        }
+        result_dict = StringToDict(schema).parse_string(text)
+        self.assertEqual(dictionary, result_dict, 'Não foi possível converter dicionário em texto')
 
     def test_parse_dict_complete_0(self):
         result_string = StringToDict(self.schema).parse_dict(self.dictionary)
