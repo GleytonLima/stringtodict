@@ -53,10 +53,10 @@ Há alguns formatadores pré-definidos que podem ser usados para serializar e de
 - Para serializar:
 
    ```python
-   attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_duas_casas_decimais_formatters(4, 2)))
-   attribute_address = Attribute("address", Definition(4, "0", numerico_para_texto_duas_casas_decimais_formatters(4, 2)))
+   attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
+   attribute_address = Attribute("address", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
    attribute_local = Attribute("local", Definition(6, " ", minuscula_formatters()))
-   attribute_value = Attribute("value", Definition(5, "0", numerico_para_texto_duas_casas_decimais_formatters(5, 2)))
+   attribute_value = Attribute("value", Definition(5, "0", numerico_para_texto_formatters(5, 2)))
    attribute_flag = Attribute("flag", Definition(1, " "))
 
    schema_sub_nested = Schema("nested_sub", [attribute_flag])

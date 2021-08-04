@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from stringtodict import Attribute, Definition, Schema, StringToDict, texto_para_numerico_formatters, \
-    minuscula_formatters, noop_formatters, numerico_para_texto_duas_casas_decimais_formatters
+    minuscula_formatters, noop_formatters, numerico_para_texto_formatters
 
 
 def gerar_schema_serializador_desserializador():
@@ -33,10 +33,10 @@ def gerar_schema_desserializador():
 
 
 def gerar_schema_serializador():
-    attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_duas_casas_decimais_formatters(4, 2)))
-    attribute_address = Attribute("address", Definition(4, "0", numerico_para_texto_duas_casas_decimais_formatters(4, 2)))
+    attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
+    attribute_address = Attribute("address", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
     attribute_local = Attribute("local", Definition(6, " ", minuscula_formatters()))
-    attribute_value = Attribute("value", Definition(5, "0", numerico_para_texto_duas_casas_decimais_formatters(5, 2)))
+    attribute_value = Attribute("value", Definition(5, "0", numerico_para_texto_formatters(5, 2)))
     attribute_flag = Attribute("flag", Definition(1, " "))
 
     schema_sub_nested = Schema("nested_sub", [attribute_flag])
@@ -63,12 +63,12 @@ class TestStringToDict(TestCase):
 
     def test_numerico_para_texto_formatters(self):
         result_value = 678.9
-        for custom_formatter in numerico_para_texto_duas_casas_decimais_formatters(5, 2):
+        for custom_formatter in numerico_para_texto_formatters(5, 2):
             result_value = custom_formatter(result_value)
         self.assertEqual("67890", result_value, 'Não foi possível converter dicionário em texto')
 
         result_value = 6.789
-        for custom_formatter in numerico_para_texto_duas_casas_decimais_formatters(5, 3):
+        for custom_formatter in numerico_para_texto_formatters(5, 3):
             result_value = custom_formatter(result_value)
         self.assertEqual("06789", result_value, 'Não foi possível converter dicionário em texto')
 
@@ -227,7 +227,7 @@ class TestStringToDict(TestCase):
         self.assertEqual(result_string, text, 'Não foi possível converter dicionário em texto')
 
     def test_deve_converter_dicionario_com_numero_em_texto_sem_ponto(self):
-        attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_duas_casas_decimais_formatters(4, 2)))
+        attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
         schema = Schema("root", [attribute_name])
         text = "0534"
         dictionary = {

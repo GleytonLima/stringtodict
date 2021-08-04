@@ -13,7 +13,7 @@ def minuscula_formatters():
     return [lambda x: str(x).lower()]
 
 
-def numerico_para_texto_duas_casas_decimais_formatters(tamanho, casas_decimais):
+def numerico_para_texto_formatters(tamanho, casas_decimais):
     return [lambda x: ("{:." + str(casas_decimais) + "f}").format(x).replace(".", ""), lambda x: str(x).zfill(tamanho)]
 
 
