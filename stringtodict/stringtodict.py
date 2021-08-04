@@ -5,8 +5,8 @@ def noop_formatters():
     return [lambda x: x]
 
 
-def texto_para_numerico_duas_casas_decimais_formatters(tamanho):
-    return [lambda x: x[:(tamanho - 2)] + '.' + x[(tamanho - 2):], lambda x: float(x.strip(' "'))]
+def texto_para_numerico_formatters(tamanho, casas_decimais):
+    return [lambda x: x[:(tamanho - casas_decimais)] + '.' + x[(tamanho - casas_decimais):], lambda x: float(x.strip(' "'))]
 
 
 def minuscula_formatters():
