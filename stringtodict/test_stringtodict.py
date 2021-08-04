@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from stringtodict import Attribute, Definition, Schema, StringToDict, texto_para_numerico_formatters, \
-    minuscula_formatters, noop_formatters, numerico_para_texto_formatters
+    minuscula_formatters, numerico_para_texto_formatters
 
 
 def gerar_schema_serializador_desserializador():
@@ -98,11 +98,55 @@ class TestStringToDict(TestCase):
         result_dict = StringToDict(schema_desserializador).parse_string(text)
         self.assertEqual(dictionary, result_dict, 'Não foi possível converter dicionário em texto')
 
+    def test_deve_dessserializar_string_com_valor_name_zerado_em_dicionario_com_sucesso(self):
+        schema_desserializador = gerar_schema_desserializador()
+        text = "000045678901234567890123456789012"
+        dictionary = {
+            'name': 0.0,
+            'address': 45.67,
+            'nested': [
+                {'local': '890123', 'value': 456.78, 'nested_sub': {'flag': '9'}},
+                {'local': '012345', 'value': 678.9, 'nested_sub': {'flag': '1'}}
+            ],
+            'flag': '2',
+        }
+        result_dict = StringToDict(schema_desserializador).parse_string(text)
+        self.assertEqual(dictionary, result_dict, 'Não foi possível converter dicionário em texto')
+
     def test_deve_serializar_dicionario_em_string_com_sucesso(self):
         schema_serializador = gerar_schema_serializador()
         text = "112345678901234567890123456789012"
         dictionary = {
             'name': 11.23,
+            'address': 45.67,
+            'nested': [
+                {'local': '890123', 'value': 456.78, 'nested_sub': {'flag': '9'}},
+                {'local': '012345', 'value': 678.9, 'nested_sub': {'flag': '1'}}
+            ],
+            'flag': '2',
+        }
+        result_text = StringToDict(schema_serializador).parse_dict(dictionary)
+        self.assertEqual(text, result_text, 'Não foi possível converter dicionário em texto')
+
+    def test_deve_serializar_dicionario_com_name_zerado_em_string_com_sucesso(self):
+        schema_serializador = gerar_schema_serializador()
+        text = "000045678901234567890123456789012"
+        dictionary = {
+            'name': 0.0,
+            'address': 45.67,
+            'nested': [
+                {'local': '890123', 'value': 456.78, 'nested_sub': {'flag': '9'}},
+                {'local': '012345', 'value': 678.9, 'nested_sub': {'flag': '1'}}
+            ],
+            'flag': '2',
+        }
+        result_text = StringToDict(schema_serializador).parse_dict(dictionary)
+        self.assertEqual(text, result_text, 'Não foi possível converter dicionário em texto')
+
+    def test_deve_serializar_dicionario_com_name_nao_informado_em_string_com_sucesso(self):
+        schema_serializador = gerar_schema_serializador()
+        text = "000045678901234567890123456789012"
+        dictionary = {
             'address': 45.67,
             'nested': [
                 {'local': '890123', 'value': 456.78, 'nested_sub': {'flag': '9'}},
@@ -217,13 +261,15 @@ class TestStringToDict(TestCase):
         self.assertEqual(result_string, text, 'Não foi possível converter dicionário em texto')
 
     def test_deve_converter_dicionario_com_numero_em_texto(self):
-        attribute_name = Attribute("name", Definition(2, "00", noop_formatters()))
+        definition = Definition(2, "00")
+        attribute_name = Attribute("name", definition)
         schema = Schema("root", [attribute_name])
         text = "55"
         dictionary = {
             'name': 55
         }
         result_string = StringToDict(schema).parse_dict(dictionary)
+        self.assertEqual(1, len(definition.custom_formatters))
         self.assertEqual(result_string, text, 'Não foi possível converter dicionário em texto')
 
     def test_deve_converter_dicionario_com_numero_em_texto_sem_ponto(self):

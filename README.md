@@ -116,5 +116,6 @@ Rodando os testes de mutação com mutmut (https://github.com/boxed/mutmut):
 
 ```bash
 mutmut run
+mutmut results
 mutmut show all
 ```

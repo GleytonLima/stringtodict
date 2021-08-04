@@ -98,7 +98,7 @@ def find_attribute_value_by_path(path_attribute, json, attribute: Attribute):
             try:
                 result_value = result_value[key]
             except Exception:
-                result_value = str(attribute.definition.default_value) * attribute.definition.size
+                return str(attribute.definition.default_value) * attribute.definition.size
     for custom_formatter in attribute.definition.custom_formatters:
         result_value = custom_formatter(result_value)
     return result_value
