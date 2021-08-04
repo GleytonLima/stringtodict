@@ -1,0 +1,9 @@
+click==8.0.1
+colorama==0.4.4
+coverage==5.5
+glob2==0.7
+junit-xml==1.8
+mutmut==2.2.0
+parso==0.8.2
+pony==0.7.14
+six==1.16.0

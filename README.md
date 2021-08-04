@@ -109,3 +109,12 @@ coverage html
 ```
 
 ![img.png](docs/coverage-example.png)
+
+## Testes de Mutação
+
+Rodando os testes de mutação com mutmut (https://github.com/boxed/mutmut):
+
+```bash
+mutmut run
+mutmut show all
+```
