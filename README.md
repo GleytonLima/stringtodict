@@ -97,3 +97,15 @@ Há alguns formatadores pré-definidos que podem ser usados para serializar e de
   # result_text == text
   # result_dict == dictionary
    ````
+  
+## Testes Unitários
+
+Rodando os testes unitários com coverage (https://coverage.readthedocs.io/en/coverage-5.5/):
+
+```bash
+coverage run -m unittest discover
+coverage report -m
+coverage html
+```
+
+![img.png](docs/coverage-example.png)
