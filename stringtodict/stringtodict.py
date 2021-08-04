@@ -1,6 +1,22 @@
 from typing import List
 
 
+def noop_formatters():
+    return [lambda x: x]
+
+
+def texto_para_numerico_duas_casas_decimais_formatters(tamanho):
+    return [lambda x: x[:(tamanho - 2)] + '.' + x[(tamanho - 2):], lambda x: float(x.strip(' "'))]
+
+
+def minuscula_formatters():
+    return [lambda x: str(x).lower()]
+
+
+def numerico_para_texto_duas_casas_decimais_formatters(tamanho, casas_decimais):
+    return [lambda x: ("{:." + str(casas_decimais) + "f}").format(x).replace(".", ""), lambda x: str(x).zfill(tamanho)]
+
+
 class Definition(object):
     def __init__(self, size: int, default_value, custom_formatters=None):
         if custom_formatters is None:
