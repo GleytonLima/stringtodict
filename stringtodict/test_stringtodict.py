@@ -84,7 +84,7 @@ class TestStringToDict(TestCase):
         self.assertEqual(6.789, result_value, 'Não foi possível converter dicionário em texto')
 
     def test_deve_dessserializar_string_em_dicionario_com_sucesso(self):
-        schema = gerar_schema_desserializador()
+        schema_desserializador = gerar_schema_desserializador()
         text = "112345678901234567890123456789012"
         dictionary = {
             'name': 11.23,
@@ -95,11 +95,11 @@ class TestStringToDict(TestCase):
             ],
             'flag': '2',
         }
-        result_dict = StringToDict(schema).parse_string(text)
+        result_dict = StringToDict(schema_desserializador).parse_string(text)
         self.assertEqual(dictionary, result_dict, 'Não foi possível converter dicionário em texto')
 
     def test_deve_serializar_dicionario_em_string_com_sucesso(self):
-        schema = gerar_schema_serializador()
+        schema_serializador = gerar_schema_serializador()
         text = "112345678901234567890123456789012"
         dictionary = {
             'name': 11.23,
@@ -110,7 +110,7 @@ class TestStringToDict(TestCase):
             ],
             'flag': '2',
         }
-        result_text = StringToDict(schema).parse_dict(dictionary)
+        result_text = StringToDict(schema_serializador).parse_dict(dictionary)
         self.assertEqual(text, result_text, 'Não foi possível converter dicionário em texto')
 
     def test_deve_converter_texto_em_dicionario_com_campo_numerico(self):
