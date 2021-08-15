@@ -6,7 +6,8 @@ def noop_formatters():
 
 
 def texto_para_numerico_formatters(tamanho, casas_decimais):
-    return [lambda x: x[:(tamanho - casas_decimais)] + '.' + x[(tamanho - casas_decimais):], lambda x: float(x.strip(' "'))]
+    return [lambda x: x[:(tamanho - casas_decimais)] + '.' + x[(tamanho - casas_decimais):],
+            lambda x: float(x.strip(' "'))]
 
 
 def minuscula_formatters():
@@ -18,9 +19,9 @@ def numerico_para_texto_formatters(tamanho, casas_decimais):
 
 
 class Definition(object):
-    def __init__(self, size: int, default_value, custom_formatters=None):
+    def __init__(self, size: int, default_value="0", custom_formatters: List = None):
         if custom_formatters is None:
-            custom_formatters = [lambda x: x]
+            custom_formatters = noop_formatters()
         self.size = size
         self.default_value = default_value
         self.custom_formatters = custom_formatters
@@ -33,7 +34,9 @@ class Attribute(object):
 
 
 class Schema(object):
-    def __init__(self, name: str, attributes: List[Attribute], occurrences: int = 1):
+    def __init__(self, name: str = "root", attributes: List[Attribute] = None, occurrences: int = 1):
+        if attributes is None:
+            attributes = []
         self.name = name
         self.attributes = attributes
         self.occurrences = occurrences
@@ -68,6 +71,8 @@ class StringToDict(object):
         return dict_result
 
     def parse_dict(self, dictionary, string_final=None, parent_path=""):
+        if dictionary is None:
+            raise ValueError('Empty dictionary not allowed')
         if string_final is None:
             string_final = [""]
         for attribute in self.schema.attributes:

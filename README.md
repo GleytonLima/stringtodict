@@ -4,17 +4,17 @@
 1. Dado um `Schema`, um texto e o dicionário:
 
     ```python
-        # Este exemplo de esquema serve tanto para serializar quanto desserializar 
-        attribute_name = Attribute("name", Definition(6))
-        attribute_address = Attribute("address", Definition(2))
-        attribute_local = Attribute("local", Definition(1))
-        attribute_value = Attribute("value", Definition(1))
-        attribute_flag = Attribute("flag", Definition(1))
-    
-        schema_sub_nested = Schema("nested_sub", [attribute_flag])
-        schema_nested = Schema("nested", [attribute_local, attribute_value, schema_sub_nested], 2)
-        
-        schema = Schema("root", [attribute_name, attribute_address, schema_nested, attribute_flag])
+    # Este exemplo de esquema serve tanto para serializar quanto desserializar 
+    attribute_name = Attribute("name", Definition(size=6, default_value=" "))
+    attribute_address = Attribute("address", Definition(size=2, default_value=" "))
+    attribute_local = Attribute("local", Definition(size=1, default_value=" "))
+    attribute_value = Attribute("value", Definition(size=1, default_value=" "))
+    attribute_flag = Attribute("flag", Definition(size=1, default_value=" "))
+
+    schema_sub_nested = Schema(name="nested_sub", attributes=[attribute_flag])
+    schema_nested = Schema(name="nested", attributes=[attribute_local, attribute_value, schema_sub_nested],
+                       occurrences=2)
+    schema = Schema(attributes=[attribute_name, attribute_address, schema_nested, attribute_flag])
     ``` 
     
     ```python
@@ -53,29 +53,41 @@ Há alguns formatadores pré-definidos que podem ser usados para serializar e de
 - Para serializar:
 
    ```python
-   attribute_name = Attribute("name", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
-   attribute_address = Attribute("address", Definition(4, "0", numerico_para_texto_formatters(4, 2)))
-   attribute_local = Attribute("local", Definition(6, " ", minuscula_formatters()))
-   attribute_value = Attribute("value", Definition(5, "0", numerico_para_texto_formatters(5, 2)))
-   attribute_flag = Attribute("flag", Definition(1, " "))
-
-   schema_sub_nested = Schema("nested_sub", [attribute_flag])
-   schema_nested = Schema("nested", [attribute_local, attribute_value, schema_sub_nested], 2)
-   schema_serializador = Schema("root", [attribute_name, attribute_address, schema_nested, attribute_flag])
+    attribute_name = Attribute(name="name",
+                               definition=Definition(size=4, custom_formatters=numerico_para_texto_formatters(4, 2)))
+    attribute_address = Attribute(name="address",
+                                  definition=Definition(size=4, custom_formatters=numerico_para_texto_formatters(4, 2)))
+    attribute_local = Attribute(name="local",
+                                definition=Definition(size=6, default_value=" ",
+                                                      custom_formatters=minuscula_formatters()))
+    attribute_value = Attribute(name="value",
+                                definition=Definition(size=5, custom_formatters=numerico_para_texto_formatters(5, 2)))
+    attribute_flag = Attribute(name="flag", definition=Definition(size=1, default_value=" "))
+    
+    schema_sub_nested = Schema(name="nested_sub", attributes=[attribute_flag])
+    schema_nested = Schema(name="nested", attributes=[attribute_local, attribute_value, schema_sub_nested],
+                           occurrences=2)
+    schema_serializador = Schema(attributes=[attribute_name, attribute_address, schema_nested, attribute_flag])
    ```
    
 - Para desserializar:
 
    ```python
-   attribute_name = Attribute("name", Definition(4, "0", texto_para_numerico_formatters(4, 2)))
-   attribute_address = Attribute("address", Definition(4, "0", texto_para_numerico_formatters(4, 2)))
-   attribute_local = Attribute("local", Definition(6, " ", minuscula_formatters()))
-   attribute_value = Attribute("value", Definition(5, "0", texto_para_numerico_formatters(5, 2)))
-   attribute_flag = Attribute("flag", Definition(1, " "))
-   
-   schema_sub_nested = Schema("nested_sub", [attribute_flag])
-   schema_nested = Schema("nested", [attribute_local, attribute_value, schema_sub_nested], 2)
-   schema_desserializador = Schema("root", [attribute_name, attribute_address, schema_nested, attribute_flag])
+    attribute_name = Attribute(name="name",
+                               definition=Definition(size=4, custom_formatters=texto_para_numerico_formatters(4, 2)))
+    attribute_address = Attribute(name="address",
+                                  definition=Definition(size=4, custom_formatters=texto_para_numerico_formatters(4, 2)))
+    attribute_local = Attribute(name="local",
+                                definition=Definition(size=6,
+                                                      custom_formatters=minuscula_formatters()))
+    attribute_value = Attribute(name="value",
+                                definition=Definition(size=5, custom_formatters=texto_para_numerico_formatters(5, 2)))
+    attribute_flag = Attribute(name="flag", definition=Definition(size=1))
+    
+    schema_sub_nested = Schema(name="nested_sub", attributes=[attribute_flag])
+    schema_nested = Schema(name="nested", attributes=[attribute_local, attribute_value, schema_sub_nested],
+                           occurrences=2)
+    schema_desserializador = Schema(attributes=[attribute_name, attribute_address, schema_nested, attribute_flag])
    ```
 - Que convertem entre o texto e o dicionário:
 
@@ -119,3 +131,5 @@ mutmut run
 mutmut results
 mutmut show all
 ```
+
+![img.png](docs/mutmut.png)

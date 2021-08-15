@@ -141,3 +141,4 @@ cython_debug/
 
 #mutmut
 .mutmut-cache
+/stringtodict/test_stringtodict.py.bak
