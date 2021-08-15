@@ -1,5 +1,14 @@
 # Conversor de Texto em Dicionário de dados
 
+## Instalação
+
+1. O projeto está publicado no PyPI. Assim, para instalá-lo, execute.
+   
+    ```bash
+     pip install stringtodict
+    ```
+
+## Uso
 
 1. Dado um `Schema`, um texto e o dicionário:
 
@@ -50,6 +59,10 @@
 
 Há alguns formatadores pré-definidos que podem ser usados para serializar e desserializar.
 
+```python
+from stringtodict import Attribute, Definition, Schema, StringToDict, texto_para_numerico_formatters, \
+    minuscula_formatters, numerico_para_texto_formatters
+```
 - Para serializar:
 
    ```python
